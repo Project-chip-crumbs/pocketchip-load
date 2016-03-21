@@ -1,0 +1,16 @@
+
+[Unit]
+ConditionFileIsExecutable=/usr/sbin/pocketchip-load
+Requires=lightdm.service
+After=lightdm.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/pocketchip-load
+TimeoutSec=0
+StandardOutput=tty
+RemainAfterExit=yes
+SysVStartPriority=99
+
+[Install]
+WantedBy=graphical.target
