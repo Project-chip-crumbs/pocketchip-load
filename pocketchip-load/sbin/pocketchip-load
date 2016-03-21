@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# TODO: Remove this later and set this based on eeprom results
+export POCKETCHIP=true
+
+function setPocketchip {
+        local KEYBOARD_MAP='/usr/local/share/kbd/keymaps/pocketChip.map'
+        local DEFAULT_MAP='/home/chip/.Xmodmap'
+
+        # Check if we're running on PocketCHIP
+        if [[ $POCKETCHIP == true ]]; then
+                if [ ! -f $DEFAULT_MAP ]; then #Make sure a default keymap isn't already set
+                        # Create symbolic link from the PocketCHIP keymap to the default xmodmap
+                        ln -s "$KEYBOARD_MAP" "$DEFAULT_MAP"
+                fi
+        else
+                # Compare PocketCHIP keyboard map to default one.
+                # If they're the same, remove symbolic link since we are not on PocketCHIP
+                if [[ -f $DEFAULT_MAP && 'stat -c%s "$KEYBOARD_MAP"'=='stat -c%s "$DEFAULT_MAP"' ]]; then
+                        rm $DEFAULT_MAP
+                fi
+        fi
+}  
+
+(sleep 10s ; \
+setPocketchip )&
+
+exit 0
