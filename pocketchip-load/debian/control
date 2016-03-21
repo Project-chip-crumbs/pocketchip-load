@@ -1,7 +1,7 @@
 Source: pocketchip-load
 Section: unknown
 Priority: optional
-Maintainer: computermouth <computermouth@crunchbook.att.net>
+Maintainer: Ben Young <software@nextthing.co>
 Build-Depends: debhelper (>= 9)
 Standards-Version: 3.9.5
 Homepage: opensource.nextthing.co
