@@ -1,0 +1,15 @@
+Source: pocketchip-load
+Section: unknown
+Priority: optional
+Maintainer: computermouth <computermouth@crunchbook.att.net>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.5
+Homepage: opensource.nextthing.co
+Github: github.com/NextThingCo
+
+Package: pocketchip-load
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Systemd service to load PocketCHIP configs
+ This service checks to see if the booting CHIP is inside a pocketchip, and 
+ in response, loads or doesn't load several configuration files.
