@@ -1,6 +1,15 @@
 #!/bin/bash
 
 # TODO: Remove this later and set this based on eeprom results
+if [ -f /sys/class/i2c-dev/i2c-1/device/1-0034/name ]; then
+	keypad=$(cat /sys/class/i2c-dev/i2c-1/device/1-0034/name)
+
+	if [[ $keypad = *"tca8418"* ]]
+   	    then
+		export POCKETCHIP=true
+	fi
+fi
+
 export POCKETCHIP=true
 
 function setPocketchip {
