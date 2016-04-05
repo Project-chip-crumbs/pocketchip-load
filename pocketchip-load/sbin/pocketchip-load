@@ -7,12 +7,23 @@ if [ -f /sys/class/i2c-dev/i2c-1/device/1-0034/name ]; then
 	if [[ $keypad = *"tca8418"* ]]
    	    then
 		export POCKETCHIP=true
+	else
+		export POCKETCHIP=false
 	fi
 fi
 
-export POCKETCHIP=true
-
 function setPocketchip {
+	if [ ! -f /sys/class/gpio/gpio114/direction ]; then
+		echo 114 > /sys/class/gpio/export
+		echo out > /sys/class/gpio/gpio114/direction	
+		echo 1 > /sys/class/gpio/gpio114/value
+
+		echo 0 > /sys/class/pwm/pwmchip0/export
+		echo 1 > /sys/class/pwm/pwmchip0/pwm0/enable
+		echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/period
+		echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle
+	fi
+
         local KEYBOARD_MAP='/usr/local/share/kbd/keymaps/pocketChip.map'
         local DEFAULT_MAP='/home/chip/.Xmodmap'
 
@@ -29,6 +40,22 @@ function setPocketchip {
                         rm $DEFAULT_MAP
                 fi
         fi
+	
+	while [ -f /sys/class/gpio/gpio114/direction ]; do
+                enable=$(cat /sys/class/gpio/gpio114/value)
+                screen=$(XAUTHORITY=/home/chip/.Xauthority DISPLAY=:0 xset q | grep "is O")
+                if [[ $screen = *"is Of"* ]]; then
+                        if [[ $enable = "1" ]]; then
+                                echo 0 > /sys/class/gpio/gpio114/value
+                        fi
+                        sleep 0.5
+                else
+                        if [[ $enable = "0" ]]; then
+                                echo 1 > /sys/class/gpio/gpio114/value
+                        fi
+                        sleep 5
+                fi
+	done
 }  
 
 (sleep 10s ; \
