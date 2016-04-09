@@ -1,29 +1,12 @@
 #!/bin/bash
 
-# TODO: Remove this later and set this based on eeprom results
-if [ -f /sys/class/i2c-dev/i2c-1/device/1-0034/name ]; then
-	keypad=$(cat /sys/class/i2c-dev/i2c-1/device/1-0034/name)
-
-	if [[ $keypad = *"tca8418"* ]]
-   	    then
-		export POCKETCHIP=true
-	else
-		export POCKETCHIP=false
-	fi
+if [[ $(xxd -p -l 6 -s 5 /sys/bus/w1/devices/2d-*/eeprom) == "009d011a0001" ]]; then
+	export POCKETCHIP=true
+else
+	export POCKETCHIP=false
 fi
 
 function setPocketchip {
-	if [ ! -f /sys/class/gpio/gpio114/direction ]; then
-		echo 114 > /sys/class/gpio/export
-		echo out > /sys/class/gpio/gpio114/direction	
-		echo 1 > /sys/class/gpio/gpio114/value
-
-		echo 0 > /sys/class/pwm/pwmchip0/export
-		echo 1 > /sys/class/pwm/pwmchip0/pwm0/enable
-		echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/period
-		echo 1000000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle
-	fi
-
         local KEYBOARD_MAP='/usr/local/share/kbd/keymaps/pocketChip.map'
         local DEFAULT_MAP='/home/chip/.Xmodmap'
 
@@ -40,25 +23,31 @@ function setPocketchip {
                         rm $DEFAULT_MAP
                 fi
         fi
+
+	brightness=$(cat /sys/class/backlight/backlight/brightness)
 	
-	while [ -f /sys/class/gpio/gpio114/direction ]; do
-                enable=$(cat /sys/class/gpio/gpio114/value)
+	while [ -f /sys/class/backlight/backlight/brightness ]; do
+                currentBrightness=$(cat /sys/class/backlight/backlight/brightness)
+                echo $currentBrightness
                 screen=$(XAUTHORITY=/home/chip/.Xauthority DISPLAY=:0 xset q | grep "is O")
                 if [[ $screen = *"is Of"* ]]; then
-                        if [[ $enable = "1" ]]; then
-                                echo 0 > /sys/class/gpio/gpio114/value
+                        if [[ $currentBrightness != "0" ]]; then
+				currentBrightness = 0
+				brightness=$(cat /sys/class/backlight/backlight/brightness)
+                           	echo 0 > /sys/class/backlight/backlight/brightness
                         fi
                         sleep 0.5
                 else
-                        if [[ $enable = "0" ]]; then
-                                echo 1 > /sys/class/gpio/gpio114/value
+                        if [[ $currentBrightness = "0" ]]; then
+				echo $brightness
+                                echo $brightness > /sys/class/backlight/backlight/brightness
                         fi
                         sleep 5
                 fi
 	done
 }  
 
-(sleep 10s ; \
+(sleep 4s ; \
 setPocketchip )&
 
 exit 0
