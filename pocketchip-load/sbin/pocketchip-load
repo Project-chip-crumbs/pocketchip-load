@@ -39,7 +39,6 @@ function setPocketchip {
                         sleep 0.5
                 else
                         if [[ $currentBrightness = "0" ]]; then
-				echo $brightness
                                 echo $brightness > /sys/class/backlight/backlight/brightness
                         fi
                         sleep 5
