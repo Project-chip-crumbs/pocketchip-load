@@ -28,7 +28,7 @@ function setPocketchip {
 	
 	while [ -f /sys/class/backlight/backlight/brightness ]; do
                 currentBrightness=$(cat /sys/class/backlight/backlight/brightness)
-                echo $currentBrightness
+                #echo $currentBrightness
                 screen=$(XAUTHORITY=/home/chip/.Xauthority DISPLAY=:0 xset q | grep "is O")
                 if [[ $screen = *"is Of"* ]]; then
                         if [[ $currentBrightness != "0" ]]; then
