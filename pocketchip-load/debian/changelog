@@ -1,3 +1,9 @@
+pocketchip-load (0.2) stable; urgency=low
+
+  * Remove printout on serial from load process.
+
+ -- Ben Young <software@nextthing.co>  Tue, 19 Apr 2016 15:02:16 -0800
+
 pocketchip-load (0.1) stable; urgency=low
 
   * Initial Release.
