@@ -1,11 +1,5 @@
 #!/bin/bash
 
-if [[ $(xxd -p -l 6 -s 5 /sys/bus/w1/devices/2d-*/eeprom) == "009d011a0001" ]]; then
-	export POCKETCHIP=true
-else
-	export POCKETCHIP=false
-fi
-
 function setPocketchip {
         local KEYBOARD_MAP='/usr/local/share/kbd/keymaps/pocketChip.map'
         local DEFAULT_MAP='/home/chip/.Xmodmap'
@@ -46,7 +40,7 @@ function setPocketchip {
 	done
 }  
 
-(sleep 4s ; \
+(sleep 5s ; \
 setPocketchip )&
 
 exit 0
