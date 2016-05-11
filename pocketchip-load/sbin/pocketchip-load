@@ -1,29 +1,23 @@
 #!/bin/bash
 
+export POCKETCHIP=true
+
 function setPocketchip {
-        local KEYBOARD_MAP='/usr/local/share/kbd/keymaps/pocketChip.map'
-        local DEFAULT_MAP='/home/chip/.Xmodmap'
+	DISPLAY=:0 XAUTHORITY=${HOME}/.Xauthority xmodmap ${HOME}/.Xmodmap 2> /dev/null
 
-        # Check if we're running on PocketCHIP
-        if [[ $POCKETCHIP == true ]]; then
-                if [ ! -f $DEFAULT_MAP ]; then #Make sure a default keymap isn't already set
-                        # Create symbolic link from the PocketCHIP keymap to the default xmodmap
-                        ln -s "$KEYBOARD_MAP" "$DEFAULT_MAP"
-                fi
-        else
-                # Compare PocketCHIP keyboard map to default one.
-                # If they're the same, remove symbolic link since we are not on PocketCHIP
-                if [[ -f $DEFAULT_MAP && 'stat -c%s "$KEYBOARD_MAP"'=='stat -c%s "$DEFAULT_MAP"' ]]; then
-                        rm $DEFAULT_MAP
-                fi
-        fi
-
+	STATUS="$?"
+	if [ "$STATUS" != "0" ] ; then
+		while [ "$STATUS" != "0" ] ; do
+			DISPLAY=:0 XAUTHORITY=${HOME}/.Xauthority xmodmap ${HOME}/.Xmodmap 2> /dev/null
+			STATUS="$?"
+			sleep 1
+		done
+	fi
 	brightness=$(cat /sys/class/backlight/backlight/brightness)
 	
 	while [ -f /sys/class/backlight/backlight/brightness ]; do
                 currentBrightness=$(cat /sys/class/backlight/backlight/brightness)
-                #echo $currentBrightness
-                screen=$(XAUTHORITY=/home/chip/.Xauthority DISPLAY=:0 xset q | grep "is O")
+                screen=$(XAUTHORITY=${HOME}/.Xauthority DISPLAY=:0 xset q 2> /dev/null | grep "is O")
                 if [[ $screen = *"is Of"* ]]; then
                         if [[ $currentBrightness != "0" ]]; then
 				currentBrightness = 0
@@ -40,7 +34,6 @@ function setPocketchip {
 	done
 }  
 
-(sleep 5s ; \
-setPocketchip )&
+setPocketchip & 
 
 exit 0
