@@ -1,3 +1,9 @@
+pocketchip-load (0.3) stable; urgency=low
+
+  * Moved some startup to awesome rc.lua
+
+ -- Ben Young <software@nextthing.co>  Wed, 11 May 2016 16:58:16 -0800
+
 pocketchip-load (0.2) stable; urgency=low
 
   * Remove printout on serial from load process.
