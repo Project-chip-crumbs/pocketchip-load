@@ -3,16 +3,6 @@
 export POCKETCHIP=true
 
 function setPocketchip {
-	DISPLAY=:0 XAUTHORITY=${HOME}/.Xauthority xmodmap ${HOME}/.Xmodmap 2> /dev/null
-
-	STATUS="$?"
-	if [ "$STATUS" != "0" ] ; then
-		while [ "$STATUS" != "0" ] ; do
-			DISPLAY=:0 XAUTHORITY=${HOME}/.Xauthority xmodmap ${HOME}/.Xmodmap 2> /dev/null
-			STATUS="$?"
-			sleep 1
-		done
-	fi
 	brightness=$(cat /sys/class/backlight/backlight/brightness)
 	
 	while [ -f /sys/class/backlight/backlight/brightness ]; do
