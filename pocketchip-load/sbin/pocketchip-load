@@ -4,6 +4,7 @@ export POCKETCHIP=true
 
 function setPocketchip {
 	loadKeys /usr/share/kbd/keymaps/pocketchip
+	DISPLAY=:0 setxkbmap pocketchip
 	brightness=$(cat /sys/class/backlight/backlight/brightness)
 	
 	while [ -f /sys/class/backlight/backlight/brightness ]; do
