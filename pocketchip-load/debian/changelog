@@ -1,3 +1,9 @@
+pocketchip-load (0.4) stable; urgency=low
+
+  * Implement the new pocketchip keymap setting.
+
+ -- Ben Young <software@nextthing.co>  Mon, 08 Aug 2016 13:30:16 -0800
+
 pocketchip-load (0.3) stable; urgency=low
 
   * Moved some startup to awesome rc.lua
