@@ -2,7 +2,7 @@ pocketchip-load (0.5) stable; urgency=low
 
   * Remove touch panel disabling on sleep, as it will freeze applications using mali when sleep is initiated.
 
- -- Ben Young <software@nextthing.co>  Wed, 14 Sept 2016 13:30:16 -0800
+ -- Ben Young <software@nextthing.co>  Wed, 14 Sep 2016 13:30:16 -0800
 
 pocketchip-load (0.4) stable; urgency=low
 
