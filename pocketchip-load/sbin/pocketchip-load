@@ -15,12 +15,12 @@ function setPocketchip {
 				currentBrightness = 0
 				brightness=$(cat /sys/class/backlight/backlight/brightness)
                            	echo 0 > /sys/class/backlight/backlight/brightness
-                        	xinput disable 1c25000.rtp
+                        	#xinput disable 1c25000.rtp
 			fi
                         sleep 0.5
                 else
                         if [[ $currentBrightness = "0" ]]; then
-				xinput enable 1c25000.rtp
+				#xinput enable 1c25000.rtp
                                 echo $brightness > /sys/class/backlight/backlight/brightness
                         fi
                         sleep 5
